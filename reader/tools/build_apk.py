@@ -67,7 +67,8 @@ def main():
     javac = os.path.join(os.environ.get("JAVA_HOME", ""), "bin", "javac.exe")
     if not os.path.exists(javac):
         javac = "javac"
-    run([javac, "--release", "8", "-classpath", ANDROID_JAR, "-d", classes] + java_files)
+    run([javac, "-encoding", "UTF-8", "--release", "8",
+         "-classpath", ANDROID_JAR, "-d", classes] + java_files)
 
     # 3. Dex the classes.
     class_files = []

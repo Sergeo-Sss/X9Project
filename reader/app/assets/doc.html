@@ -14,7 +14,7 @@ body {
   font-size: var(--fs);
   line-height: 1.5;
   /* Padding keeps text clear of the rounded corners of the watch screen. */
-  padding: 44px 20px 60px;
+  padding: 40px 18px 72px;
   -webkit-text-size-adjust: none;
 }
 h1 { font-size: 1.5em; line-height: 1.25; margin: .2em 0 .5em; color: #fff; }
@@ -31,6 +31,16 @@ em { color: #ffe0a8; font-style: italic; }
 table { border-collapse: collapse; font-size: .88em; }
 td { border: 1px solid #444; padding: 4px 8px; white-space: nowrap; text-align: center; }
 
+/* stacked fractions */
+.frac { display: inline-flex; flex-direction: column; vertical-align: -0.45em;
+  text-align: center; margin: 0 .12em; font-size: .95em; }
+.frac > .fn { padding: 0 .3em; border-bottom: 1.5px solid currentColor; line-height: 1.25; }
+.frac > .fd { padding: 0 .3em; line-height: 1.25; }
+
+/* yellow rule marking the end of a question */
+hr.qend { border: none; border-top: 2px solid #e8b000; border-radius: 2px;
+  margin: 1.5em 0 .3em; }
+
 /* inline contents at the top of the page */
 #contents { border: 1px solid #333; border-radius: 10px; background: #0d0d0d;
   margin: 0 0 1.1em; padding: 4px 12px; }
@@ -44,78 +54,22 @@ td { border: 1px solid #444; padding: 4px 8px; white-space: nowrap; text-align: 
 #contents a.lvl2 { padding-left: 14px; color: #bcd; }
 #contents a.lvl3 { padding-left: 30px; color: #9ab; font-size: .86em; }
 
-/* top bar + TOC overlay (shown on tap) */
-#bar { position: fixed; top: 0; left: 0; right: 0; height: 38px; display: none;
-  align-items: center; justify-content: center; gap: 14px;
-  background: rgba(20,20,20,.92); border-bottom: 1px solid #333; z-index: 10; }
-#bar button { background: #2a2a2a; color: #fff; border: none; border-radius: 16px;
-  font-size: 16px; padding: 5px 14px; }
-#bar.on { display: flex; }
-#toc { position: fixed; inset: 0; background: #0a0a0a; z-index: 20; display: none;
-  overflow-y: auto; padding: 40px 18px 40px; }
-#toc.on { display: block; }
-#toc a { display: block; color: #cfe3ff; text-decoration: none; padding: 9px 0;
-  border-bottom: 1px solid #222; font-size: .95em; }
-#toc .lvl2 { padding-left: 14px; color: #bcd; font-size: .9em; }
-#toc .lvl3 { padding-left: 28px; color: #9ab; font-size: .85em; }
-#toc .close { color: #f88; border-bottom: none; margin-bottom: 6px; }
+/* fixed bottom control bar */
+#ctl { position: fixed; left: 0; right: 0; bottom: 0; height: 52px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: rgba(14,14,16,.96); border-top: 1px solid #333; z-index: 10;
+  padding-bottom: 4px; }
+#ctl button { background: #242424; color: #fff; border: none; border-radius: 18px;
+  font-size: 15px; padding: 8px 13px; }
+#ctl .tocbtn { background: #1f3350; color: #cfe3ff; font-weight: 700; padding: 8px 16px; }
 </style>
 </head>
 <body>
-<div id="bar">
+<div id="ctl">
   <button onclick="fs(-1)">A&minus;</button>
-  <button onclick="toc()">&#9776;</button>
+  <button class="tocbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; Оглавление</button>
   <button onclick="fs(1)">A+</button>
 </div>
-<div id="toc"><a class="close" onclick="toc()">&times; закрыть</a><a class="lvl1" href="#h0">Часть 1. Случайные величины и их законы распределения</a>
-<a class="lvl2" href="#h1">1.1. Дискретная случайная величина: способ задания, математическое ожидание, дисперсия, функция распределения</a>
-<a class="lvl3" href="#h2">Способ задания — закон (ряд) распределения</a>
-<a class="lvl3" href="#h3">Функция распределения</a>
-<a class="lvl3" href="#h4">Математическое ожидание</a>
-<a class="lvl3" href="#h5">Дисперсия</a>
-<a class="lvl3" href="#h6">Пример</a>
-<a class="lvl2" href="#h7">1.2. Непрерывная случайная величина: плотность распределения</a>
-<a class="lvl3" href="#h8">Свойства плотности</a>
-<a class="lvl3" href="#h9">Числовые характеристики через плотность</a>
-<a class="lvl3" href="#h10">Пример</a>
-<a class="lvl2" href="#h11">1.3. Непрерывная случайная величина: функция распределения</a>
-<a class="lvl3" href="#h12">Свойства</a>
-<a class="lvl3" href="#h13">Пример</a>
-<a class="lvl2" href="#h14">1.4. Равномерное распределение</a>
-<a class="lvl3" href="#h15">Плотность распределения</a>
-<a class="lvl3" href="#h16">Функция распределения</a>
-<a class="lvl3" href="#h17">Математическое ожидание</a>
-<a class="lvl3" href="#h18">Дисперсия</a>
-<a class="lvl2" href="#h19">1.5. Показательное (экспоненциальное) распределение</a>
-<a class="lvl3" href="#h20">Плотность распределения</a>
-<a class="lvl3" href="#h21">Функция распределения</a>
-<a class="lvl3" href="#h22">Математическое ожидание и дисперсия</a>
-<a class="lvl3" href="#h23">Дополнительные свойства</a>
-<a class="lvl2" href="#h24">1.6. Нормальное распределение</a>
-<a class="lvl3" href="#h25">Плотность распределения</a>
-<a class="lvl3" href="#h26">Числовые характеристики</a>
-<a class="lvl3" href="#h27">Стандартное нормальное распределение</a>
-<a class="lvl3" href="#h28">Функция распределения</a>
-<a class="lvl3" href="#h29">Вероятность попадания в интервал</a>
-<a class="lvl3" href="#h30">Правило трёх сигм</a>
-<a class="lvl1" href="#h31">Часть 2. Моделирование случайных величин</a>
-<a class="lvl2" href="#h32">2.1. Моделирование дискретной случайной величины (алгоритм)</a>
-<a class="lvl3" href="#h33">Идея метода</a>
-<a class="lvl3" href="#h34">Алгоритм</a>
-<a class="lvl3" href="#h35">Статистические оценки</a>
-<a class="lvl2" href="#h36">2.2. Моделирование непрерывной случайной величины</a>
-<a class="lvl3" href="#h37">Обоснование</a>
-<a class="lvl3" href="#h38">Алгоритм</a>
-<a class="lvl3" href="#h39">Пример</a>
-<a class="lvl2" href="#h40">2.3. Моделирование равномерного распределения</a>
-<a class="lvl2" href="#h41">2.4. Моделирование показательного распределения</a>
-<a class="lvl2" href="#h42">2.5. Моделирование нормального распределения</a>
-<a class="lvl3" href="#h43">Способ 1. На основе центральной предельной теоремы</a>
-<a class="lvl3" href="#h44">Способ 2. Метод Бокса — Мюллера</a>
-<a class="lvl3" href="#h45">Алгоритм</a>
-<a class="lvl2" href="#h46">2.6. Гистограмма. Критерий согласия Пирсона</a>
-<a class="lvl3" href="#h47">Гистограмма</a>
-<a class="lvl3" href="#h48">Критерий согласия Пирсона (χ²)</a></div>
 <main>
 <details id="contents" open>
 <summary>&#128209; Оглавление</summary>
@@ -173,241 +127,255 @@ td { border: 1px solid #444; padding: 4px 8px; white-space: nowrap; text-align: 
 <p>Случайные величины и их моделирование</p>
 <p><em>Часть 1 — законы распределения. Часть 2 — моделирование и проверка гипотез</em></p>
 <p><strong>Содержание</strong></p>
+<hr class="qend">
 <h1 id="h0">Часть 1. Случайные величины и их законы распределения</h1>
 <h2 id="h1">1.1. Дискретная случайная величина: способ задания, математическое ожидание, дисперсия, функция распределения</h2>
-<p><strong>Случайная величина</strong><strong> — величина, которая в результате опыта со случайным исходом принимает то или иное значение, причём заранее неизвестно, какое именно. </strong><strong>Дискретной</strong><strong> называется случайная величина, множество возможных значений которой конечно или счётно, то есть значения можно перечислить.</strong></p>
+<p><strong>Случайная величина — величина, которая в результате опыта со случайным исходом принимает то или иное значение, причём заранее неизвестно, какое именно. Дискретной называется случайная величина, множество возможных значений которой конечно или счётно, то есть значения можно перечислить.</strong></p>
 <h3 id="h2">Способ задания — закон (ряд) распределения</h3>
-<p><strong>Законом распределения</strong><strong> называется любое правило (таблица, функция, график), устанавливающее связь между возможными значениями случайной величины и вероятностями их появления. Для ДСВ закон распределения обычно задаётся </strong><strong>рядом распределения</strong><strong> — таблицей:</strong></p>
-<div class="tw"><table><tr><td><strong>X</strong></td><td><strong>x</strong><strong><sub>1</sub></strong></td><td><strong>x</strong><strong><sub>2</sub></strong></td><td><strong>…</strong></td><td><strong>x</strong><strong><sub>k</sub></strong></td><td><strong>…</strong></td><td><strong>x</strong><strong><sub>n</sub></strong></td></tr><tr><td><strong>P</strong></td><td><strong>p</strong><strong><sub>1</sub></strong></td><td><strong>p</strong><strong><sub>2</sub></strong></td><td><strong>…</strong></td><td><strong>p</strong><strong><sub>k</sub></strong></td><td><strong>…</strong></td><td><strong>p</strong><strong><sub>n</sub></strong></td></tr></table></div>
-<p><strong>где p</strong><strong><sub>k</sub></strong><strong> = P(X = x</strong><strong><sub>k</sub></strong><strong>). События {X = x</strong><strong><sub>k</sub></strong><strong>} несовместны и образуют полную группу, поэтому выполняется условие нормировки:</strong></p>
-<p><strong>p</strong><strong><sub>1</sub></strong><strong> + p</strong><strong><sub>2</sub></strong><strong> + … + p</strong><strong><sub>n</sub></strong><strong> = ∑ p</strong><strong><sub>k</sub></strong><strong> = 1</strong></p>
-<p><strong>Графически ряд распределения изображают </strong><strong>многоугольником распределения</strong><strong> — ломаной, соединяющей точки (x</strong><strong><sub>k</sub></strong><strong>, p</strong><strong><sub>k</sub></strong><strong>).</strong></p>
+<p><strong>Законом распределения называется любое правило (таблица, функция, график), устанавливающее связь между возможными значениями случайной величины и вероятностями их появления. Для ДСВ закон распределения обычно задаётся рядом распределения — таблицей:</strong></p>
+<div class="tw"><table><tr><td><strong>X</strong></td><td><strong>x<sub>1</sub></strong></td><td><strong>x<sub>2</sub></strong></td><td><strong>…</strong></td><td><strong>x<sub>k</sub></strong></td><td><strong>…</strong></td><td><strong>x<sub>n</sub></strong></td></tr><tr><td><strong>P</strong></td><td><strong>p<sub>1</sub></strong></td><td><strong>p<sub>2</sub></strong></td><td><strong>…</strong></td><td><strong>p<sub>k</sub></strong></td><td><strong>…</strong></td><td><strong>p<sub>n</sub></strong></td></tr></table></div>
+<p><strong>где p<sub>k</sub> = P(X = x<sub>k</sub>). События {X = x<sub>k</sub>} несовместны и образуют полную группу, поэтому выполняется условие нормировки:</strong></p>
+<p><strong>p<sub>1</sub> + p<sub>2</sub> + … + p<sub>n</sub> = ∑ p<sub>k</sub> = 1</strong></p>
+<p><strong>Графически ряд распределения изображают многоугольником распределения — ломаной, соединяющей точки (x<sub>k</sub>, p<sub>k</sub>).</strong></p>
 <h3 id="h3">Функция распределения</h3>
-<p><strong>Функцией распределения</strong><strong> случайной величины X называется вероятность того, что X примет значение, меньшее x:</strong></p>
-<p><strong>F(x) = P(X &lt; x) = ∑</strong><strong><sub>x_{i</sub></strong><strong> &lt; x} p</strong><strong><sub>i</sub></strong></p>
-<p><strong>Для ДСВ F(x) — </strong><strong>разрывная ступенчатая функция</strong><strong>: скачки происходят в точках x</strong><strong><sub>k</sub></strong><strong> и равны p</strong><strong><sub>k</sub></strong><strong>; сумма всех скачков равна 1. Например, при x</strong><strong><sub>1</sub></strong><strong> &lt; x ≤ x</strong><strong><sub>2</sub></strong><strong> F(x) = p</strong><strong><sub>1</sub></strong><strong>, при x</strong><strong><sub>2</sub></strong><strong> &lt; x ≤ x</strong><strong><sub>3</sub></strong><strong> F(x) = p</strong><strong><sub>1</sub></strong><strong> + p</strong><strong><sub>2</sub></strong><strong> и т.д.</strong></p>
+<p><strong>Функцией распределения случайной величины X называется вероятность того, что X примет значение, меньшее x:</strong></p>
+<p><strong>F(x) = P(X &lt; x) = ∑<sub>x_{i</sub> &lt; x} p<sub>i</sub></strong></p>
+<p><strong>Для ДСВ F(x) — разрывная ступенчатая функция: скачки происходят в точках x<sub>k</sub> и равны p<sub>k</sub>; сумма всех скачков равна 1. Например, при x<sub>1</sub> &lt; x ≤ x<sub>2</sub> F(x) = p<sub>1</sub>, при x<sub>2</sub> &lt; x ≤ x<sub>3</sub> F(x) = p<sub>1</sub> + p<sub>2</sub> и т.д.</strong></p>
 <p><strong>Свойства функции распределения:</strong></p>
 <ul>
 <li><strong>0 ≤ F(x) ≤ 1;</strong></li>
-<li><strong>F(x) неубывающая: если x</strong><strong><sub>2</sub></strong><strong> &gt; x</strong><strong><sub>1</sub></strong><strong>, то F(x</strong><strong><sub>2</sub></strong><strong>) ≥ F(x</strong><strong><sub>1</sub></strong><strong>);</strong></li>
+<li><strong>F(x) неубывающая: если x<sub>2</sub> &gt; x<sub>1</sub>, то F(x<sub>2</sub>) ≥ F(x<sub>1</sub>);</strong></li>
 <li><strong>F(−∞) = 0, F(+∞) = 1;</strong></li>
 <li><strong>P(a ≤ X &lt; b) = F(b) − F(a);</strong></li>
 <li><strong>F(x) непрерывна слева.</strong></li>
 </ul>
 <h3 id="h4">Математическое ожидание</h3>
-<p><strong>Математическое ожидание</strong><strong> — среднее значение случайной величины (центр распределения):</strong></p>
-<p><strong>M(X) = ∑ x</strong><strong><sub>k</sub></strong><strong> p</strong><strong><sub>k</sub></strong><strong> = x</strong><strong><sub>1</sub></strong><strong>p</strong><strong><sub>1</sub></strong><strong> + x</strong><strong><sub>2</sub></strong><strong>p</strong><strong><sub>2</sub></strong><strong> + … + x</strong><strong><sub>n</sub></strong><strong>p</strong><strong><sub>n</sub></strong></p>
+<p><strong>Математическое ожидание — среднее значение случайной величины (центр распределения):</strong></p>
+<p><strong>M(X) = ∑ x<sub>k</sub> p<sub>k</sub> = x<sub>1</sub>p<sub>1</sub> + x<sub>2</sub>p<sub>2</sub> + … + x<sub>n</sub>p<sub>n</sub></strong></p>
 <p><strong>Свойства: M(C) = C; M(CX) = C·M(X); M(X + Y) = M(X) + M(Y); для независимых X и Y M(XY) = M(X)·M(Y).</strong></p>
 <h3 id="h5">Дисперсия</h3>
-<p><strong>Дисперсия</strong><strong> — математическое ожидание квадрата отклонения случайной величины от её математического ожидания (мера рассеяния). Отклонение X* = X − M(X) называется центрированной случайной величиной, M(X*) = 0.</strong></p>
-<p><strong>D(X) = M[(X − M(X))</strong><strong><sup>2</sup></strong><strong>] = ∑ (x</strong><strong><sub>k</sub></strong><strong> − M)</strong><strong><sup>2</sup></strong><strong> p</strong><strong><sub>k</sub></strong></p>
+<p><strong>Дисперсия — математическое ожидание квадрата отклонения случайной величины от её математического ожидания (мера рассеяния). Отклонение X* = X − M(X) называется центрированной случайной величиной, M(X*) = 0.</strong></p>
+<p><strong>D(X) = M[(X − M(X))<sup>2</sup>] = ∑ (x<sub>k</sub> − M)<sup>2</sup> p<sub>k</sub></strong></p>
 <p><strong>Раскрывая квадрат, получаем более удобную формулу:</strong></p>
-<p><strong>D(X) = ∑ x</strong><strong><sub>k</sub></strong><strong><sup>2</sup></strong><strong> p</strong><strong><sub>k</sub></strong><strong> − M</strong><strong><sup>2</sup></strong><strong> = M(X</strong><strong><sup>2</sup></strong><strong>) − [M(X)]</strong><strong><sup>2</sup></strong></p>
-<p><strong>Среднее квадратическое отклонение</strong><strong>: σ(X) = √D(X). Свойства дисперсии: D(X) ≥ 0; D(C) = 0; D(CX) = C</strong><strong><sup>2</sup></strong><strong>D(X); D(X + C) = D(X); для независимых X и Y D(X ± Y) = D(X) + D(Y).</strong></p>
+<p><strong>D(X) = ∑ x<sub>k</sub><sup>2</sup> p<sub>k</sub> − M<sup>2</sup> = M(X<sup>2</sup>) − [M(X)]<sup>2</sup></strong></p>
+<p><strong>Среднее квадратическое отклонение: σ(X) = √D(X). Свойства дисперсии: D(X) ≥ 0; D(C) = 0; D(CX) = C<sup>2</sup>D(X); D(X + C) = D(X); для независимых X и Y D(X ± Y) = D(X) + D(Y).</strong></p>
 <h3 id="h6">Пример</h3>
 <div class="tw"><table><tr><td><strong>X</strong></td><td><strong>1</strong></td><td><strong>2</strong></td><td><strong>3</strong></td><td><strong>4</strong></td><td><strong>5</strong></td></tr><tr><td><strong>P</strong></td><td><strong>0,2</strong></td><td><strong>0,2</strong></td><td><strong>0,2</strong></td><td><strong>0,2</strong></td><td><strong>0,2</strong></td></tr></table></div>
-<p><strong>M = 0,2·(1 + 2 + 3 + 4 + 5) = 3,   D = 0,2·(1 + 4 + 9 + 16 + 25) − 3</strong><strong><sup>2</sup></strong><strong> = 11 − 9 = 2</strong></p>
+<p><strong>M = 0,2·(1 + 2 + 3 + 4 + 5) = 3,   D = 0,2·(1 + 4 + 9 + 16 + 25) − 3<sup>2</sup> = 11 − 9 = 2</strong></p>
+<hr class="qend">
 <h2 id="h7">1.2. Непрерывная случайная величина: плотность распределения</h2>
-<p><strong>Непрерывной</strong><strong> называется случайная величина, возможные значения которой непрерывно заполняют некоторый промежуток (конечный или бесконечный), а функция распределения F(x) непрерывна и (кусочно) дифференцируема. Для НСВ вероятность любого отдельного значения равна нулю: P(X = x) = 0, поэтому ряд распределения построить нельзя и закон распределения задают плотностью.</strong></p>
-<p><strong>Плотностью распределения</strong><strong> (дифференциальной функцией распределения) называется производная функции распределения:</strong></p>
-<p><strong>f(x) = F′(x) = lim</strong><strong><sub>Δx→0</sub></strong><strong> P(x ≤ X &lt; x + Δx) / Δx</strong></p>
-<p><strong>Смысл: f(x)·dx — вероятность попадания X в элементарный интервал (x, x + dx). График f(x) называется </strong><strong>кривой распределения</strong><strong>.</strong></p>
+<p><strong>Непрерывной называется случайная величина, возможные значения которой непрерывно заполняют некоторый промежуток (конечный или бесконечный), а функция распределения F(x) непрерывна и (кусочно) дифференцируема. Для НСВ вероятность любого отдельного значения равна нулю: P(X = x) = 0, поэтому ряд распределения построить нельзя и закон распределения задают плотностью.</strong></p>
+<p><strong>Плотностью распределения (дифференциальной функцией распределения) называется производная функции распределения:</strong></p>
+<p><strong>f(x) = F′(x) = lim<sub>Δx→0</sub> P(x ≤ X &lt; x + Δx) / Δx</strong></p>
+<p><strong>Смысл: f(x)·dx — вероятность попадания X в элементарный интервал (x, x + dx). График f(x) называется кривой распределения.</strong></p>
 <h3 id="h8">Свойства плотности</h3>
 <ul>
 <li><strong>f(x) ≥ 0 (так как F(x) неубывающая);</strong></li>
-<li><strong>условие нормировки: ∫</strong><strong><sub>−∞</sub></strong><strong><sup>+∞</sup></strong><strong> f(x) dx = 1 (площадь под кривой распределения равна 1);</strong></li>
-<li><strong>P(a &lt; X &lt; b) = ∫</strong><strong><sub>a</sub></strong><strong><sup>b</sup></strong><strong> f(x) dx = F(b) − F(a);</strong></li>
-<li><strong>F(x) = ∫</strong><strong><sub>−∞</sub></strong><strong><sup>x</sup></strong><strong> f(t) dt.</strong></li>
+<li><strong>условие нормировки: ∫<sub>−∞</sub><sup>+∞</sup> f(x) dx = 1 (площадь под кривой распределения равна 1);</strong></li>
+<li><strong>P(a &lt; X &lt; b) = ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a);</strong></li>
+<li><strong>F(x) = ∫<sub>−∞</sub><sup>x</sup> f(t) dt.</strong></li>
 </ul>
-<p><strong>Если X задана на интервале (a, b), то f(x) &gt; 0 при x ∈ (a, b), f(x) = 0 вне его и ∫</strong><strong><sub>a</sub></strong><strong><sup>b</sup></strong><strong> f(x) dx = 1.</strong></p>
+<p><strong>Если X задана на интервале (a, b), то f(x) &gt; 0 при x ∈ (a, b), f(x) = 0 вне его и ∫<sub>a</sub><sup>b</sup> f(x) dx = 1.</strong></p>
 <h3 id="h9">Числовые характеристики через плотность</h3>
-<p><strong>M(X) = ∫</strong><strong><sub>−∞</sub></strong><strong><sup>+∞</sup></strong><strong> x f(x) dx</strong></p>
-<p><strong>D(X) = ∫</strong><strong><sub>−∞</sub></strong><strong><sup>+∞</sup></strong><strong> (x − M)</strong><strong><sup>2</sup></strong><strong> f(x) dx = ∫</strong><strong><sub>−∞</sub></strong><strong><sup>+∞</sup></strong><strong> x</strong><strong><sup>2</sup></strong><strong> f(x) dx − M</strong><strong><sup>2</sup></strong></p>
+<p><strong>M(X) = ∫<sub>−∞</sub><sup>+∞</sup> x f(x) dx</strong></p>
+<p><strong>D(X) = ∫<sub>−∞</sub><sup>+∞</sup> (x − M)<sup>2</sup> f(x) dx = ∫<sub>−∞</sub><sup>+∞</sup> x<sup>2</sup> f(x) dx − M<sup>2</sup></strong></p>
 <h3 id="h10">Пример</h3>
-<p><strong>f(x) = 4x</strong><strong><sup>3</sup></strong><strong> на (0, 1). Проверка нормировки: ∫</strong><strong><sub>0</sub></strong><strong><sup>1</sup></strong><strong> 4x</strong><strong><sup>3</sup></strong><strong> dx = x</strong><strong><sup>4</sup></strong><strong>|</strong><strong><sub>0</sub></strong><strong><sup>1</sup></strong><strong> = 1.</strong></p>
-<p><strong>M = ∫</strong><strong><sub>0</sub></strong><strong><sup>1</sup></strong><strong> 4x</strong><strong><sup>4</sup></strong><strong> dx = 4/5,   D = ∫</strong><strong><sub>0</sub></strong><strong><sup>1</sup></strong><strong> 4x</strong><strong><sup>5</sup></strong><strong> dx − (4/5)</strong><strong><sup>2</sup></strong><strong> = 2/3 − 16/25 = 2/75</strong></p>
+<p><strong>f(x) = 4x<sup>3</sup> на (0, 1). Проверка нормировки: ∫<sub>0</sub><sup>1</sup> 4x<sup>3</sup> dx = x<sup>4</sup>|<sub>0</sub><sup>1</sup> = 1.</strong></p>
+<p><strong>M = ∫<sub>0</sub><sup>1</sup> 4x<sup>4</sup> dx = <span class="frac"><span class="fn">4</span><span class="fd">5</span></span>,   D = ∫<sub>0</sub><sup>1</sup> 4x<sup>5</sup> dx − (<span class="frac"><span class="fn">4</span><span class="fd">5</span></span>)<sup>2</sup> = <span class="frac"><span class="fn">2</span><span class="fd">3</span></span> − <span class="frac"><span class="fn">16</span><span class="fd">25</span></span> = <span class="frac"><span class="fn">2</span><span class="fd">75</span></span></strong></p>
+<hr class="qend">
 <h2 id="h11">1.3. Непрерывная случайная величина: функция распределения</h2>
-<p><strong>Функция распределения</strong><strong> (интегральная функция) непрерывной случайной величины определяется так же, как для дискретной: F(x) = P(X &lt; x). Отличие в том, что для НСВ F(x) </strong><strong>непрерывна</strong><strong> на всей числовой оси (а не ступенчата).</strong></p>
+<p><strong>Функция распределения (интегральная функция) непрерывной случайной величины определяется так же, как для дискретной: F(x) = P(X &lt; x). Отличие в том, что для НСВ F(x) непрерывна на всей числовой оси (а не ступенчата).</strong></p>
 <p><strong>Связь с плотностью:</strong></p>
-<p><strong>F(x) = ∫</strong><strong><sub>−∞</sub></strong><strong><sup>x</sup></strong><strong> f(t) dt,    f(x) = F′(x)</strong></p>
+<p><strong>F(x) = ∫<sub>−∞</sub><sup>x</sup> f(t) dt,    f(x) = F′(x)</strong></p>
 <p><strong>Для величины, заданной на (a, b):</strong></p>
-<p><strong>F(x) = 0 при x ≤ a;   F(x) = ∫</strong><strong><sub>a</sub></strong><strong><sup>x</sup></strong><strong> f(t) dt при a &lt; x &lt; b;   F(x) = 1 при x ≥ b</strong></p>
+<p><strong>F(x) = 0 при x ≤ a;   F(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt при a &lt; x &lt; b;   F(x) = 1 при x ≥ b</strong></p>
 <h3 id="h12">Свойства</h3>
 <ul>
 <li><strong>0 ≤ F(x) ≤ 1;</strong></li>
-<li><strong>F(x) — неубывающая функция; на интервале, где f(x) &gt; 0, — строго возрастающая (поэтому имеет обратную функцию x = F</strong><strong><sup>−1</sup></strong><strong>(y), что используется при моделировании);</strong></li>
+<li><strong>F(x) — неубывающая функция; на интервале, где f(x) &gt; 0, — строго возрастающая (поэтому имеет обратную функцию x = F<sup>−1</sup>(y), что используется при моделировании);</strong></li>
 <li><strong>F(−∞) = 0, F(+∞) = 1;</strong></li>
 <li><strong>F(x) непрерывна, следовательно P(X = x) = 0;</strong></li>
 <li><strong>P(a &lt; X &lt; b) = P(a ≤ X ≤ b) = P(a ≤ X &lt; b) = F(b) − F(a).</strong></li>
 </ul>
 <h3 id="h13">Пример</h3>
-<p><strong>Для f(x) = 4x</strong><strong><sup>3</sup></strong><strong> на (0, 1): F(x) = 0 при x ≤ 0; F(x) = x</strong><strong><sup>4</sup></strong><strong> при 0 &lt; x &lt; 1; F(x) = 1 при x ≥ 1. Тогда P(0,5 &lt; X &lt; 1) = 1 − 0,5</strong><strong><sup>4</sup></strong><strong> = 0,9375.</strong></p>
+<p><strong>Для f(x) = 4x<sup>3</sup> на (0, 1): F(x) = 0 при x ≤ 0; F(x) = x<sup>4</sup> при 0 &lt; x &lt; 1; F(x) = 1 при x ≥ 1. Тогда P(0,5 &lt; X &lt; 1) = 1 − 0,5<sup>4</sup> = 0,9375.</strong></p>
+<hr class="qend">
 <h2 id="h14">1.4. Равномерное распределение</h2>
-<p><strong>Непрерывная случайная величина X распределена </strong><strong>равномерно</strong><strong> на отрезке [a, b], если её плотность на этом отрезке постоянна, а вне его равна нулю. Обозначение: X ~ R[a, b].</strong></p>
+<p><strong>Непрерывная случайная величина X распределена равномерно на отрезке [a, b], если её плотность на этом отрезке постоянна, а вне его равна нулю. Обозначение: X ~ R[a, b].</strong></p>
 <h3 id="h15">Плотность распределения</h3>
-<p><strong>f(x) = 1/(b − a) при x ∈ [a, b];   f(x) = 0 при x ∉ [a, b]</strong></p>
-<p><strong>Константа 1/(b − a) получается из условия нормировки: площадь прямоугольника с основанием (b − a) должна быть равна 1.</strong></p>
+<p><strong>f(x) = <span class="frac"><span class="fn">1</span><span class="fd">b − a</span></span> при x ∈ [a, b];   f(x) = 0 при x ∉ [a, b]</strong></p>
+<p><strong>Константа <span class="frac"><span class="fn">1</span><span class="fd">b − a</span></span> получается из условия нормировки: площадь прямоугольника с основанием (b − a) должна быть равна 1.</strong></p>
 <h3 id="h16">Функция распределения</h3>
-<p><strong>F(x) = 0 при x &lt; a;   F(x) = (x − a)/(b − a) при a ≤ x ≤ b;   F(x) = 1 при x &gt; b</strong></p>
+<p><strong>F(x) = 0 при x &lt; a;   F(x) = <span class="frac"><span class="fn">x − a</span><span class="fd">b − a</span></span> при a ≤ x ≤ b;   F(x) = 1 при x &gt; b</strong></p>
 <h3 id="h17">Математическое ожидание</h3>
-<p><strong>M(X) = ∫</strong><strong><sub>a</sub></strong><strong><sup>b</sup></strong><strong> x/(b − a) dx = (b</strong><strong><sup>2</sup></strong><strong> − a</strong><strong><sup>2</sup></strong><strong>) / (2(b − a)) = (a + b)/2</strong></p>
+<p><strong>M(X) = ∫<sub>a</sub><sup>b</sup> <span class="frac"><span class="fn">x</span><span class="fd">b − a</span></span> dx = <span class="frac"><span class="fn">b<sup>2</sup> − a<sup>2</sup></span><span class="fd">2(b − a)</span></span> = <span class="frac"><span class="fn">a + b</span><span class="fd">2</span></span></strong></p>
 <h3 id="h18">Дисперсия</h3>
-<p><strong>M(X</strong><strong><sup>2</sup></strong><strong>) = ∫</strong><strong><sub>a</sub></strong><strong><sup>b</sup></strong><strong> x</strong><strong><sup>2</sup></strong><strong>/(b − a) dx = (a</strong><strong><sup>2</sup></strong><strong> + ab + b</strong><strong><sup>2</sup></strong><strong>)/3</strong></p>
-<p><strong>D(X) = (a</strong><strong><sup>2</sup></strong><strong> + ab + b</strong><strong><sup>2</sup></strong><strong>)/3 − (a + b)</strong><strong><sup>2</sup></strong><strong>/4 = (b − a)</strong><strong><sup>2</sup></strong><strong>/12,    σ = (b − a)/(2√3)</strong></p>
-<p><strong>Вероятность попадания в интервал (α, β) ⊂ [a, b] пропорциональна его длине: P(α &lt; X &lt; β) = (β − α)/(b − a).</strong></p>
-<p><strong>Частный случай R[0, 1]: f = 1, F(x) = x, M = 1/2, D = 1/12. Именно эта величина является </strong><strong>базовой</strong><strong> при моделировании (её дают функции RANDOM, RAND и т.п.).</strong></p>
+<p><strong>M(X<sup>2</sup>) = ∫<sub>a</sub><sup>b</sup> <span class="frac"><span class="fn">x<sup>2</sup></span><span class="fd">b − a</span></span> dx = <span class="frac"><span class="fn">a<sup>2</sup> + ab + b<sup>2</sup></span><span class="fd">3</span></span></strong></p>
+<p><strong>D(X) = <span class="frac"><span class="fn">a<sup>2</sup> + ab + b<sup>2</sup></span><span class="fd">3</span></span> − <span class="frac"><span class="fn">(a + b)<sup>2</sup></span><span class="fd">4</span></span> = <span class="frac"><span class="fn">(b − a)<sup>2</sup></span><span class="fd">12</span></span>,    σ = <span class="frac"><span class="fn">b − a</span><span class="fd">2√3</span></span></strong></p>
+<p><strong>Вероятность попадания в интервал (α, β) ⊂ [a, b] пропорциональна его длине: P(α &lt; X &lt; β) = <span class="frac"><span class="fn">β − α</span><span class="fd">b − a</span></span>.</strong></p>
+<p><strong>Частный случай R[0, 1]: f = 1, F(x) = x, M = <span class="frac"><span class="fn">1</span><span class="fd">2</span></span>, D = <span class="frac"><span class="fn">1</span><span class="fd">12</span></span>. Именно эта величина является базовой при моделировании (её дают функции RANDOM, RAND и т.п.).</strong></p>
+<hr class="qend">
 <h2 id="h19">1.5. Показательное (экспоненциальное) распределение</h2>
-<p><strong>Непрерывная случайная величина X имеет </strong><strong>показательное распределение</strong><strong> с параметром λ &gt; 0, если её плотность:</strong></p>
+<p><strong>Непрерывная случайная величина X имеет показательное распределение с параметром λ &gt; 0, если её плотность:</strong></p>
 <h3 id="h20">Плотность распределения</h3>
-<p><strong>f(x) = λ e</strong><strong><sup>−λx</sup></strong><strong> при x ≥ 0;   f(x) = 0 при x &lt; 0</strong></p>
+<p><strong>f(x) = λ e<sup>−λx</sup> при x ≥ 0;   f(x) = 0 при x &lt; 0</strong></p>
 <h3 id="h21">Функция распределения</h3>
-<p><strong>F(x) = ∫</strong><strong><sub>0</sub></strong><strong><sup>x</sup></strong><strong> λ e</strong><strong><sup>−λt</sup></strong><strong> dt = 1 − e</strong><strong><sup>−λx</sup></strong><strong> при x ≥ 0;   F(x) = 0 при x &lt; 0</strong></p>
+<p><strong>F(x) = ∫<sub>0</sub><sup>x</sup> λ e<sup>−λt</sup> dt = 1 − e<sup>−λx</sup> при x ≥ 0;   F(x) = 0 при x &lt; 0</strong></p>
 <h3 id="h22">Математическое ожидание и дисперсия</h3>
 <p><strong>Интегрированием по частям:</strong></p>
-<p><strong>M(X) = ∫</strong><strong><sub>0</sub></strong><strong><sup>∞</sup></strong><strong> x λ e</strong><strong><sup>−λx</sup></strong><strong> dx = 1/λ</strong></p>
-<p><strong>M(X</strong><strong><sup>2</sup></strong><strong>) = ∫</strong><strong><sub>0</sub></strong><strong><sup>∞</sup></strong><strong> x</strong><strong><sup>2</sup></strong><strong> λ e</strong><strong><sup>−λx</sup></strong><strong> dx = 2/λ</strong><strong><sup>2</sup></strong><strong>,    D(X) = 2/λ</strong><strong><sup>2</sup></strong><strong> − 1/λ</strong><strong><sup>2</sup></strong><strong> = 1/λ</strong><strong><sup>2</sup></strong></p>
-<p><strong>σ(X) = 1/λ = M(X)</strong></p>
+<p><strong>M(X) = ∫<sub>0</sub><sup>∞</sup> x λ e<sup>−λx</sup> dx = <span class="frac"><span class="fn">1</span><span class="fd">λ</span></span></strong></p>
+<p><strong>M(X<sup>2</sup>) = ∫<sub>0</sub><sup>∞</sup> x<sup>2</sup> λ e<sup>−λx</sup> dx = <span class="frac"><span class="fn">2</span><span class="fd">λ<sup>2</sup></span></span>,    D(X) = <span class="frac"><span class="fn">2</span><span class="fd">λ<sup>2</sup></span></span> − <span class="frac"><span class="fn">1</span><span class="fd">λ<sup>2</sup></span></span> = <span class="frac"><span class="fn">1</span><span class="fd">λ<sup>2</sup></span></span></strong></p>
+<p><strong>σ(X) = <span class="frac"><span class="fn">1</span><span class="fd">λ</span></span> = M(X)</strong></p>
 <p><strong>Для показательного распределения математическое ожидание равно среднему квадратическому отклонению.</strong></p>
 <h3 id="h23">Дополнительные свойства</h3>
 <ul>
-<li><strong>P(a &lt; X &lt; b) = e</strong><strong><sup>−λa</sup></strong><strong> − e</strong><strong><sup>−λb</sup></strong><strong>.</strong></li>
-<li><strong>Отсутствие последействия</strong><strong> («отсутствие памяти»): P(X ≥ t + τ | X ≥ t) = P(X ≥ τ) = e</strong><strong><sup>−λτ</sup></strong><strong>.</strong></li>
-<li><strong>Применение: время между событиями простейшего (пуассоновского) потока с интенсивностью λ, время обслуживания в системах массового обслуживания, время безотказной работы (функция надёжности R(t) = e</strong><strong><sup>−λt</sup></strong><strong>).</strong></li>
+<li><strong>P(a &lt; X &lt; b) = e<sup>−λa</sup> − e<sup>−λb</sup>.</strong></li>
+<li><strong>Отсутствие последействия («отсутствие памяти»): P(X ≥ t + τ | X ≥ t) = P(X ≥ τ) = e<sup>−λτ</sup>.</strong></li>
+<li><strong>Применение: время между событиями простейшего (пуассоновского) потока с интенсивностью λ, время обслуживания в системах массового обслуживания, время безотказной работы (функция надёжности R(t) = e<sup>−λt</sup>).</strong></li>
 </ul>
+<hr class="qend">
 <h2 id="h24">1.6. Нормальное распределение</h2>
-<p><strong>Непрерывная случайная величина X распределена </strong><strong>нормально</strong><strong> (по закону Гаусса) с параметрами a и σ &gt; 0, если её плотность:</strong></p>
+<p><strong>Непрерывная случайная величина X распределена нормально (по закону Гаусса) с параметрами a и σ &gt; 0, если её плотность:</strong></p>
 <h3 id="h25">Плотность распределения</h3>
-<p><strong>f(x) = 1/(σ√(2π)) · e</strong><strong><sup>−(x − a)²/(2σ²)</sup></strong><strong>,   −∞ &lt; x &lt; +∞</strong></p>
+<p><strong>f(x) = <span class="frac"><span class="fn">1</span><span class="fd">σ√(2π)</span></span> · e<sup>−(x − a)²/(2σ²)</sup>,   −∞ &lt; x &lt; +∞</strong></p>
 <p><strong>Обозначение: X ~ N(a, σ). Свойства кривой нормального распределения (кривой Гаусса):</strong></p>
 <ul>
 <li><strong>определена на всей оси, f(x) &gt; 0, ось Ox — горизонтальная асимптота;</strong></li>
 <li><strong>симметрична относительно прямой x = a;</strong></li>
-<li><strong>максимум в точке x = a, равный 1/(σ√(2π));</strong></li>
+<li><strong>максимум в точке x = a, равный <span class="frac"><span class="fn">1</span><span class="fd">σ√(2π)</span></span>;</strong></li>
 <li><strong>точки перегиба x = a ± σ;</strong></li>
 <li><strong>изменение a сдвигает кривую вдоль оси Ox без изменения формы; увеличение σ делает кривую ниже и шире (площадь остаётся равной 1).</strong></li>
 </ul>
 <h3 id="h26">Числовые характеристики</h3>
-<p><strong>M(X) = a,   D(X) = σ</strong><strong><sup>2</sup></strong><strong>,   σ(X) = σ</strong></p>
+<p><strong>M(X) = a,   D(X) = σ<sup>2</sup>,   σ(X) = σ</strong></p>
 <p><strong>Таким образом, параметры нормального закона имеют прямой смысл: a — математическое ожидание, σ — среднее квадратическое отклонение. Для нормального распределения мода и медиана тоже равны a.</strong></p>
 <h3 id="h27">Стандартное нормальное распределение</h3>
-<p><strong>При a = 0, σ = 1 получаем N(0, 1) с плотностью φ(x) = (1/√(2π)) e</strong><strong><sup>−x²/2</sup></strong><strong>. Любая X ~ N(a, σ) приводится к стандартной заменой Z = (X − a)/σ.</strong></p>
+<p><strong>При a = 0, σ = 1 получаем N(0, 1) с плотностью φ(x) = (<span class="frac"><span class="fn">1</span><span class="fd">√(2π)</span></span>) e<sup>−x²/2</sup>. Любая X ~ N(a, σ) приводится к стандартной заменой Z = <span class="frac"><span class="fn">X − a</span><span class="fd">σ</span></span>.</strong></p>
 <h3 id="h28">Функция распределения</h3>
-<p><strong>F(x) = 1/(σ√(2π)) ∫</strong><strong><sub>−∞</sub></strong><strong><sup>x</sup></strong><strong> e</strong><strong><sup>−(t − a)²/(2σ²)</sup></strong><strong> dt = 1/2 + Φ((x − a)/σ)</strong></p>
-<p><strong>где Φ(x) — </strong><strong>функция Лапласа</strong><strong> (табулирована):</strong></p>
-<p><strong>Φ(x) = 1/√(2π) ∫</strong><strong><sub>0</sub></strong><strong><sup>x</sup></strong><strong> e</strong><strong><sup>−t²/2</sup></strong><strong> dt</strong></p>
+<p><strong>F(x) = <span class="frac"><span class="fn">1</span><span class="fd">σ√(2π)</span></span> ∫<sub>−∞</sub><sup>x</sup> e<sup>−(t − a)²/(2σ²)</sup> dt = <span class="frac"><span class="fn">1</span><span class="fd">2</span></span> + Φ(<span class="frac"><span class="fn">x − a</span><span class="fd">σ</span></span>)</strong></p>
+<p><strong>где Φ(x) — функция Лапласа (табулирована):</strong></p>
+<p><strong>Φ(x) = <span class="frac"><span class="fn">1</span><span class="fd">√(2π)</span></span> ∫<sub>0</sub><sup>x</sup> e<sup>−t²/2</sup> dt</strong></p>
 <p><strong>Свойства Φ(x): нечётная, Φ(−x) = −Φ(x); Φ(0) = 0; Φ(+∞) = 0,5; при x &gt; 5 Φ(x) ≈ 0,5. Интеграл не выражается через элементарные функции.</strong></p>
 <h3 id="h29">Вероятность попадания в интервал</h3>
-<p><strong>P(α &lt; X &lt; β) = Φ((β − a)/σ) − Φ((α − a)/σ)</strong></p>
-<p><strong>P(|X − a| &lt; δ) = 2Φ(δ/σ)</strong></p>
+<p><strong>P(α &lt; X &lt; β) = Φ(<span class="frac"><span class="fn">β − a</span><span class="fd">σ</span></span>) − Φ(<span class="frac"><span class="fn">α − a</span><span class="fd">σ</span></span>)</strong></p>
+<p><strong>P(|X − a| &lt; δ) = 2Φ(<span class="frac"><span class="fn">δ</span><span class="fd">σ</span></span>)</strong></p>
 <h3 id="h30">Правило трёх сигм</h3>
 <div class="tw"><table><tr><td><strong>δ</strong></td><td><strong>σ</strong></td><td><strong>2σ</strong></td><td><strong>3σ</strong></td></tr><tr><td><strong>P(|X − a| &lt; δ)</strong></td><td><strong>0,6827</strong></td><td><strong>0,9545</strong></td><td><strong>0,9973</strong></td></tr></table></div>
 <p><strong>Практически все значения нормально распределённой величины (99,73 %) лежат в интервале (a − 3σ, a + 3σ).</strong></p>
-<p><strong>Значение нормального закона объясняет </strong><strong>центральная предельная теорема</strong><strong>: сумма большого числа независимых случайных величин с конечными дисперсиями (каждая из которых вносит малый вклад) распределена приближённо нормально.</strong></p>
+<p><strong>Значение нормального закона объясняет центральная предельная теорема: сумма большого числа независимых случайных величин с конечными дисперсиями (каждая из которых вносит малый вклад) распределена приближённо нормально.</strong></p>
+<hr class="qend">
 <h1 id="h31">Часть 2. Моделирование случайных величин</h1>
-<p><strong>При моделировании на ЭВМ вместо истинно случайных чисел используются </strong><strong>псевдослучайные</strong><strong> — числа, получаемые по детерминированному алгоритму, но по своим статистическим свойствам близкие к случайным. Базисом для моделирования служит псевдослучайная величина R, равномерно распределённая на (0, 1) (функции Random, RAND(), RANDOM()). Генератор инициализируется один раз (например, Randomize по системному таймеру); повторная инициализация внутри одной последовательности нарушает равномерность.</strong></p>
+<p><strong>При моделировании на ЭВМ вместо истинно случайных чисел используются псевдослучайные — числа, получаемые по детерминированному алгоритму, но по своим статистическим свойствам близкие к случайным. Базисом для моделирования служит псевдослучайная величина R, равномерно распределённая на (0, 1) (функции Random, RAND(), RANDOM()). Генератор инициализируется один раз (например, Randomize по системному таймеру); повторная инициализация внутри одной последовательности нарушает равномерность.</strong></p>
+<hr class="qend">
 <h2 id="h32">2.1. Моделирование дискретной случайной величины (алгоритм)</h2>
-<p><strong>Пусть ДСВ X задана рядом распределения x</strong><strong><sub>1</sub></strong><strong>, …, x</strong><strong><sub>n</sub></strong><strong> с вероятностями p</strong><strong><sub>1</sub></strong><strong>, …, p</strong><strong><sub>n</sub></strong><strong>. Используется </strong><strong>метод обратной функции</strong><strong>.</strong></p>
+<p><strong>Пусть ДСВ X задана рядом распределения x<sub>1</sub>, …, x<sub>n</sub> с вероятностями p<sub>1</sub>, …, p<sub>n</sub>. Используется метод обратной функции.</strong></p>
 <h3 id="h33">Идея метода</h3>
-<p><strong>Отрезок [0, 1] разбивается на частичные отрезки Δ</strong><strong><sub>1</sub></strong><strong>, Δ</strong><strong><sub>2</sub></strong><strong>, …, Δ</strong><strong><sub>n</sub></strong><strong> длиной p</strong><strong><sub>1</sub></strong><strong>, p</strong><strong><sub>2</sub></strong><strong>, …, p</strong><strong><sub>n</sub></strong><strong> (так как ∑p</strong><strong><sub>k</sub></strong><strong> = 1, они покрывают весь отрезок). Границы отрезков — накопленные вероятности, то есть значения функции распределения:</strong></p>
-<p><strong>Δ</strong><strong><sub>1</sub></strong><strong> = [0; p</strong><strong><sub>1</sub></strong><strong>],   Δ</strong><strong><sub>k</sub></strong><strong> = (p</strong><strong><sub>1</sub></strong><strong> + … + p</strong><strong><sub>k−1</sub></strong><strong>; p</strong><strong><sub>1</sub></strong><strong> + … + p</strong><strong><sub>k</sub></strong><strong>],  k ≥ 2</strong></p>
-<p><strong>Если псевдослучайное число r попало в Δ</strong><strong><sub>k</sub></strong><strong>, то X принимает значение x</strong><strong><sub>k</sub></strong><strong>. Так как R равномерна, P(r ∈ Δ</strong><strong><sub>k</sub></strong><strong>) = длина Δ</strong><strong><sub>k</sub></strong><strong> = p</strong><strong><sub>k</sub></strong><strong>, что и требуется. Название метода: на оси ординат графика F(x) разыгрывается r, а по ней находится абсцисса x = F</strong><strong><sup>−1</sup></strong><strong>(r).</strong></p>
+<p><strong>Отрезок [0, 1] разбивается на частичные отрезки Δ<sub>1</sub>, Δ<sub>2</sub>, …, Δ<sub>n</sub> длиной p<sub>1</sub>, p<sub>2</sub>, …, p<sub>n</sub> (так как ∑p<sub>k</sub> = 1, они покрывают весь отрезок). Границы отрезков — накопленные вероятности, то есть значения функции распределения:</strong></p>
+<p><strong>Δ<sub>1</sub> = [0; p<sub>1</sub>],   Δ<sub>k</sub> = (p<sub>1</sub> + … + p<sub>k−1</sub>; p<sub>1</sub> + … + p<sub>k</sub>],  k ≥ 2</strong></p>
+<p><strong>Если псевдослучайное число r попало в Δ<sub>k</sub>, то X принимает значение x<sub>k</sub>. Так как R равномерна, P(r ∈ Δ<sub>k</sub>) = длина Δ<sub>k</sub> = p<sub>k</sub>, что и требуется. Название метода: на оси ординат графика F(x) разыгрывается r, а по ней находится абсцисса x = F<sup>−1</sup>(r).</strong></p>
 <h3 id="h34">Алгоритм</h3>
 <ul>
-<li><strong>Ввести значения x</strong><strong><sub>k</sub></strong><strong>, вероятности p</strong><strong><sub>k</sub></strong><strong>, объём выборки N.</strong></li>
-<li><strong>Вычислить накопленные вероятности: S</strong><strong><sub>0</sub></strong><strong> = 0, S</strong><strong><sub>k</sub></strong><strong> = S</strong><strong><sub>k−1</sub></strong><strong> + p</strong><strong><sub>k</sub></strong><strong>, k = 1, …, n (S</strong><strong><sub>n</sub></strong><strong> = 1).</strong></li>
+<li><strong>Ввести значения x<sub>k</sub>, вероятности p<sub>k</sub>, объём выборки N.</strong></li>
+<li><strong>Вычислить накопленные вероятности: S<sub>0</sub> = 0, S<sub>k</sub> = S<sub>k−1</sub> + p<sub>k</sub>, k = 1, …, n (S<sub>n</sub> = 1).</strong></li>
 <li><strong>Инициализировать генератор (один раз).</strong></li>
-<li><strong>Для i = 1, …, N: получить r = RANDOM; найти наименьшее k, для которого r ≤ S</strong><strong><sub>k</sub></strong><strong>; положить X</strong><strong><sub>i</sub></strong><strong> = x</strong><strong><sub>k</sub></strong><strong>.</strong></li>
+<li><strong>Для i = 1, …, N: получить r = RANDOM; найти наименьшее k, для которого r ≤ S<sub>k</sub>; положить X<sub>i</sub> = x<sub>k</sub>.</strong></li>
 <li><strong>Вывести первые q значений выборки.</strong></li>
-<li><strong>Вычислить точные значения M = ∑x</strong><strong><sub>k</sub></strong><strong>p</strong><strong><sub>k</sub></strong><strong>, D = ∑x</strong><strong><sub>k</sub></strong><strong><sup>2</sup></strong><strong>p</strong><strong><sub>k</sub></strong><strong> − M</strong><strong><sup>2</sup></strong><strong>.</strong></li>
+<li><strong>Вычислить точные значения M = ∑x<sub>k</sub>p<sub>k</sub>, D = ∑x<sub>k</sub><sup>2</sup>p<sub>k</sub> − M<sup>2</sup>.</strong></li>
 <li><strong>Вычислить оценки m и d по выборке (см. ниже) и сравнить с точными.</strong></li>
 </ul>
 <h3 id="h35">Статистические оценки</h3>
 <p><strong>Несмещённая оценка математического ожидания (выборочное среднее):</strong></p>
-<p><strong>m = (1/N) ∑</strong><strong><sub>i=1</sub></strong><strong><sup>N</sup></strong><strong> x</strong><strong><sub>i</sub></strong></p>
-<p><strong>Оценка g = (1/N)∑x</strong><strong><sub>i</sub></strong><strong><sup>2</sup></strong><strong> − m</strong><strong><sup>2</sup></strong><strong> является </strong><strong>смещённой</strong><strong>: M(g) = (N − 1)/N · D, поскольку используется не точное M, а его оценка m. Несмещённая оценка дисперсии:</strong></p>
-<p><strong>d = (1/(N − 1)) ∑</strong><strong><sub>i=1</sub></strong><strong><sup>N</sup></strong><strong> x</strong><strong><sub>i</sub></strong><strong><sup>2</sup></strong><strong> − N/(N − 1) · m</strong><strong><sup>2</sup></strong><strong> = (1/(N − 1)) ∑ (x</strong><strong><sub>i</sub></strong><strong> − m)</strong><strong><sup>2</sup></strong></p>
+<p><strong>m = (<span class="frac"><span class="fn">1</span><span class="fd">N</span></span>) ∑<sub>i=1</sub><sup>N</sup> x<sub>i</sub></strong></p>
+<p><strong>Оценка g = (<span class="frac"><span class="fn">1</span><span class="fd">N</span></span>)∑x<sub>i</sub><sup>2</sup> − m<sup>2</sup> является смещённой: M(g) = <span class="frac"><span class="fn">N − 1</span><span class="fd">N</span></span> · D, поскольку используется не точное M, а его оценка m. Несмещённая оценка дисперсии:</strong></p>
+<p><strong>d = (<span class="frac"><span class="fn">1</span><span class="fd">N − 1</span></span>) ∑<sub>i=1</sub><sup>N</sup> x<sub>i</sub><sup>2</sup> − <span class="frac"><span class="fn">N</span><span class="fd">N − 1</span></span> · m<sup>2</sup> = (<span class="frac"><span class="fn">1</span><span class="fd">N − 1</span></span>) ∑ (x<sub>i</sub> − m)<sup>2</sup></strong></p>
 <p><strong>Замечание: m нужно вычислить полностью (по всем N значениям) до вычисления d, поэтому оценки нельзя считать в одном цикле с накоплением m.</strong></p>
-<p><strong>С ростом N оценки сходятся к точным значениям (закон больших чисел); погрешность оценки среднего порядка σ/√N.</strong></p>
+<p><strong>С ростом N оценки сходятся к точным значениям (закон больших чисел); погрешность оценки среднего порядка <span class="frac"><span class="fn">σ</span><span class="fd">√N</span></span>.</strong></p>
+<hr class="qend">
 <h2 id="h36">2.2. Моделирование непрерывной случайной величины</h2>
-<p><strong>Пусть НСВ X задана на (a, b) плотностью f(x) &gt; 0 и функцией распределения F(x). Применяется </strong><strong>метод обратной функции</strong><strong>.</strong></p>
+<p><strong>Пусть НСВ X задана на (a, b) плотностью f(x) &gt; 0 и функцией распределения F(x). Применяется метод обратной функции.</strong></p>
 <h3 id="h37">Обоснование</h3>
-<p><strong>Так как f(x) &gt; 0 на (a, b), функция y = F(x) строго возрастает и имеет однозначную обратную x = G(y) = F</strong><strong><sup>−1</sup></strong><strong>(y), определённую на (0, 1) со значениями в (a, b). Пусть R ~ R(0, 1) и ξ = G(R). Тогда неравенства c &lt; ξ &lt; d и F(c) &lt; R &lt; F(d) равносильны, поэтому:</strong></p>
+<p><strong>Так как f(x) &gt; 0 на (a, b), функция y = F(x) строго возрастает и имеет однозначную обратную x = G(y) = F<sup>−1</sup>(y), определённую на (0, 1) со значениями в (a, b). Пусть R ~ R(0, 1) и ξ = G(R). Тогда неравенства c &lt; ξ &lt; d и F(c) &lt; R &lt; F(d) равносильны, поэтому:</strong></p>
 <p><strong>P(c &lt; ξ &lt; d) = P(F(c) &lt; R &lt; F(d)) = F(d) − F(c)</strong></p>
 <p><strong>Следовательно, F(x) является функцией распределения ξ, то есть ξ совпадает по распределению с X.</strong></p>
 <h3 id="h38">Алгоритм</h3>
 <ul>
-<li><strong>По плотности найти функцию распределения: F(x) = ∫</strong><strong><sub>a</sub></strong><strong><sup>x</sup></strong><strong> f(t) dt.</strong></li>
-<li><strong>Решить уравнение F(x) = r относительно x, получить явную формулу x = F</strong><strong><sup>−1</sup></strong><strong>(r).</strong></li>
-<li><strong>Для i = 1, …, N: получить r</strong><strong><sub>i</sub></strong><strong> = RANDOM, вычислить x</strong><strong><sub>i</sub></strong><strong> = F</strong><strong><sup>−1</sup></strong><strong>(r</strong><strong><sub>i</sub></strong><strong>).</strong></li>
-<li><strong>Вычислить точные M = ∫x f(x)dx, D = ∫x</strong><strong><sup>2</sup></strong><strong>f(x)dx − M</strong><strong><sup>2</sup></strong><strong> и оценки m, d по тем же формулам, что и для ДСВ; сравнить.</strong></li>
+<li><strong>По плотности найти функцию распределения: F(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt.</strong></li>
+<li><strong>Решить уравнение F(x) = r относительно x, получить явную формулу x = F<sup>−1</sup>(r).</strong></li>
+<li><strong>Для i = 1, …, N: получить r<sub>i</sub> = RANDOM, вычислить x<sub>i</sub> = F<sup>−1</sup>(r<sub>i</sub>).</strong></li>
+<li><strong>Вычислить точные M = ∫x f(x)dx, D = ∫x<sup>2</sup>f(x)dx − M<sup>2</sup> и оценки m, d по тем же формулам, что и для ДСВ; сравнить.</strong></li>
 </ul>
 <h3 id="h39">Пример</h3>
-<p><strong>f(x) = 4x</strong><strong><sup>3</sup></strong><strong> на (0, 1): F(x) = x</strong><strong><sup>4</sup></strong><strong>; x</strong><strong><sup>4</sup></strong><strong> = r ⇒ x = r</strong><strong><sup>1/4</sup></strong><strong> = ⁴√r. Точные значения: M = 0,8, D = 2/75 ≈ 0,0267.</strong></p>
-<p><strong>Ещё пример: f(x) = sin x на (0, π/2): F(x) = 1 − cos x ⇒ x = arccos(1 − r).</strong></p>
+<p><strong>f(x) = 4x<sup>3</sup> на (0, 1): F(x) = x<sup>4</sup>; x<sup>4</sup> = r ⇒ x = r<sup>1/4</sup> = ⁴√r. Точные значения: M = 0,8, D = <span class="frac"><span class="fn">2</span><span class="fd">75</span></span> ≈ 0,0267.</strong></p>
+<p><strong>Ещё пример: f(x) = sin x на (0, <span class="frac"><span class="fn">π</span><span class="fd">2</span></span>): F(x) = 1 − cos x ⇒ x = arccos(1 − r).</strong></p>
 <p><strong>Ограничение метода: уравнение F(x) = r должно решаться явно. Если это невозможно (например, для нормального закона), используют другие методы — специальные преобразования, метод отбора (Неймана) и т.п.</strong></p>
+<hr class="qend">
 <h2 id="h40">2.3. Моделирование равномерного распределения</h2>
-<p><strong>X ~ R[a, b]: F(x) = (x − a)/(b − a). По методу обратной функции решаем уравнение:</strong></p>
-<p><strong>(x − a)/(b − a) = r   ⇒   x = a + (b − a)·r</strong></p>
-<p><strong>Алгоритм:</strong><strong> для i = 1, …, N получить r</strong><strong><sub>i</sub></strong><strong> = RANDOM и вычислить x</strong><strong><sub>i</sub></strong><strong> = a + (b − a)r</strong><strong><sub>i</sub></strong><strong>. Это линейное преобразование отрезка (0, 1) в (a, b).</strong></p>
-<p><strong>Контроль: точные значения M = (a + b)/2, D = (b − a)</strong><strong><sup>2</sup></strong><strong>/12 сравниваются с оценками m и d. Для проверки качества самого генератора RANDOM строят гистограмму значений r</strong><strong><sub>i</sub></strong><strong> (она должна быть близка к прямоугольной) и проверяют гипотезу о равномерности критерием Пирсона.</strong></p>
+<p><strong>X ~ R[a, b]: F(x) = <span class="frac"><span class="fn">x − a</span><span class="fd">b − a</span></span>. По методу обратной функции решаем уравнение:</strong></p>
+<p><strong><span class="frac"><span class="fn">x − a</span><span class="fd">b − a</span></span> = r   ⇒   x = a + (b − a)·r</strong></p>
+<p><strong>Алгоритм: для i = 1, …, N получить r<sub>i</sub> = RANDOM и вычислить x<sub>i</sub> = a + (b − a)r<sub>i</sub>. Это линейное преобразование отрезка (0, 1) в (a, b).</strong></p>
+<p><strong>Контроль: точные значения M = <span class="frac"><span class="fn">a + b</span><span class="fd">2</span></span>, D = <span class="frac"><span class="fn">(b − a)<sup>2</sup></span><span class="fd">12</span></span> сравниваются с оценками m и d. Для проверки качества самого генератора RANDOM строят гистограмму значений r<sub>i</sub> (она должна быть близка к прямоугольной) и проверяют гипотезу о равномерности критерием Пирсона.</strong></p>
 <p><strong>Пример: a = 2, b = 5, r = 0,4 ⇒ x = 2 + 3·0,4 = 3,2.</strong></p>
+<hr class="qend">
 <h2 id="h41">2.4. Моделирование показательного распределения</h2>
-<p><strong>X имеет показательное распределение с параметром λ: F(x) = 1 − e</strong><strong><sup>−λx</sup></strong><strong>, x ≥ 0. Решаем уравнение F(x) = r:</strong></p>
-<p><strong>1 − e</strong><strong><sup>−λx</sup></strong><strong> = r   ⇒   e</strong><strong><sup>−λx</sup></strong><strong> = 1 − r   ⇒   x = −(1/λ)·ln(1 − r)</strong></p>
+<p><strong>X имеет показательное распределение с параметром λ: F(x) = 1 − e<sup>−λx</sup>, x ≥ 0. Решаем уравнение F(x) = r:</strong></p>
+<p><strong>1 − e<sup>−λx</sup> = r   ⇒   e<sup>−λx</sup> = 1 − r   ⇒   x = −(<span class="frac"><span class="fn">1</span><span class="fd">λ</span></span>)·ln(1 − r)</strong></p>
 <p><strong>Так как величина 1 − R также равномерно распределена на (0, 1), формулу можно упростить:</strong></p>
-<p><strong>x = −(1/λ)·ln r</strong></p>
-<p><strong>Алгоритм:</strong><strong> для i = 1, …, N получить r</strong><strong><sub>i</sub></strong><strong> = RANDOM (при r</strong><strong><sub>i</sub></strong><strong> = 0 повторить розыгрыш, так как ln 0 не определён) и вычислить x</strong><strong><sub>i</sub></strong><strong> = −ln(r</strong><strong><sub>i</sub></strong><strong>)/λ.</strong></p>
-<p><strong>Контроль: M = 1/λ, D = 1/λ</strong><strong><sup>2</sup></strong><strong>. Применение: моделирование интервалов между заявками простейшего потока и времени обслуживания в системах массового обслуживания.</strong></p>
-<p><strong>Пример: λ = 2, r = 0,3 ⇒ x = −ln 0,3 / 2 ≈ 1,204 / 2 ≈ 0,602.</strong></p>
+<p><strong>x = −(<span class="frac"><span class="fn">1</span><span class="fd">λ</span></span>)·ln r</strong></p>
+<p><strong>Алгоритм: для i = 1, …, N получить r<sub>i</sub> = RANDOM (при r<sub>i</sub> = 0 повторить розыгрыш, так как ln 0 не определён) и вычислить x<sub>i</sub> = −<span class="frac"><span class="fn">ln(r<sub>i</sub>)</span><span class="fd">λ</span></span>.</strong></p>
+<p><strong>Контроль: M = <span class="frac"><span class="fn">1</span><span class="fd">λ</span></span>, D = <span class="frac"><span class="fn">1</span><span class="fd">λ<sup>2</sup></span></span>. Применение: моделирование интервалов между заявками простейшего потока и времени обслуживания в системах массового обслуживания.</strong></p>
+<p><strong>Пример: λ = 2, r = 0,3 ⇒ x = −ln <span class="frac"><span class="fn">0,3</span><span class="fd">2</span></span> ≈ <span class="frac"><span class="fn">1,204</span><span class="fd">2</span></span> ≈ 0,602.</strong></p>
+<hr class="qend">
 <h2 id="h42">2.5. Моделирование нормального распределения</h2>
 <p><strong>Для N(a, σ) функция распределения выражается через интеграл Лапласа и не обращается в элементарных функциях, поэтому метод обратной функции напрямую не применяется. Сначала моделируют стандартную величину Z ~ N(0, 1), затем выполняют преобразование:</strong></p>
 <p><strong>X = a + σ·Z</strong></p>
 <h3 id="h43">Способ 1. На основе центральной предельной теоремы</h3>
-<p><strong>Сумма n независимых R</strong><strong><sub>i</sub></strong><strong> ~ R(0, 1) имеет M = n/2, D = n/12 и при большом n распределена приближённо нормально. Нормированная сумма:</strong></p>
-<p><strong>Z = (∑</strong><strong><sub>i=1</sub></strong><strong><sup>n</sup></strong><strong> r</strong><strong><sub>i</sub></strong><strong> − n/2) / √(n/12)</strong></p>
+<p><strong>Сумма n независимых R<sub>i</sub> ~ R(0, 1) имеет M = <span class="frac"><span class="fn">n</span><span class="fd">2</span></span>, D = <span class="frac"><span class="fn">n</span><span class="fd">12</span></span> и при большом n распределена приближённо нормально. Нормированная сумма:</strong></p>
+<p><strong>Z = (∑<sub>i=1</sub><sup>n</sup> r<sub>i</sub> − <span class="frac"><span class="fn">n</span><span class="fd">2</span></span>) / √(<span class="frac"><span class="fn">n</span><span class="fd">12</span></span>)</strong></p>
 <p><strong>Обычно берут n = 12, тогда формула особенно проста:</strong></p>
-<p><strong>Z = ∑</strong><strong><sub>i=1</sub></strong><strong><sup>12</sup></strong><strong> r</strong><strong><sub>i</sub></strong><strong> − 6,    X = a + σ(∑</strong><strong><sub>i=1</sub></strong><strong><sup>12</sup></strong><strong> r</strong><strong><sub>i</sub></strong><strong> − 6)</strong></p>
+<p><strong>Z = ∑<sub>i=1</sub><sup>12</sup> r<sub>i</sub> − 6,    X = a + σ(∑<sub>i=1</sub><sup>12</sup> r<sub>i</sub> − 6)</strong></p>
 <p><strong>Недостаток: значения Z ограничены отрезком [−6; 6], «хвосты» распределения воспроизводятся приближённо; на одно значение расходуется 12 случайных чисел.</strong></p>
 <h3 id="h44">Способ 2. Метод Бокса — Мюллера</h3>
-<p><strong>По двум независимым r</strong><strong><sub>1</sub></strong><strong>, r</strong><strong><sub>2</sub></strong><strong> ~ R(0, 1) получают две независимые стандартные нормальные величины (точный метод):</strong></p>
-<p><strong>Z</strong><strong><sub>1</sub></strong><strong> = √(−2 ln r</strong><strong><sub>1</sub></strong><strong>) · cos(2πr</strong><strong><sub>2</sub></strong><strong>),    Z</strong><strong><sub>2</sub></strong><strong> = √(−2 ln r</strong><strong><sub>1</sub></strong><strong>) · sin(2πr</strong><strong><sub>2</sub></strong><strong>)</strong></p>
+<p><strong>По двум независимым r<sub>1</sub>, r<sub>2</sub> ~ R(0, 1) получают две независимые стандартные нормальные величины (точный метод):</strong></p>
+<p><strong>Z<sub>1</sub> = √(−2 ln r<sub>1</sub>) · cos(2πr<sub>2</sub>),    Z<sub>2</sub> = √(−2 ln r<sub>1</sub>) · sin(2πr<sub>2</sub>)</strong></p>
 <h3 id="h45">Алгоритм</h3>
 <ul>
 <li><strong>Ввести a, σ, N.</strong></li>
-<li><strong>Для i = 1, …, N: получить нужное количество чисел RANDOM, вычислить z</strong><strong><sub>i</sub></strong><strong> одним из способов, затем x</strong><strong><sub>i</sub></strong><strong> = a + σz</strong><strong><sub>i</sub></strong><strong>.</strong></li>
-<li><strong>Сравнить оценки m и d с точными M = a, D = σ</strong><strong><sup>2</sup></strong><strong>; проверить правило трёх сигм (доля значений в (a − 3σ, a + 3σ) ≈ 0,9973); построить гистограмму и проверить нормальность критерием Пирсона.</strong></li>
+<li><strong>Для i = 1, …, N: получить нужное количество чисел RANDOM, вычислить z<sub>i</sub> одним из способов, затем x<sub>i</sub> = a + σz<sub>i</sub>.</strong></li>
+<li><strong>Сравнить оценки m и d с точными M = a, D = σ<sup>2</sup>; проверить правило трёх сигм (доля значений в (a − 3σ, a + 3σ) ≈ 0,9973); построить гистограмму и проверить нормальность критерием Пирсона.</strong></li>
 </ul>
+<hr class="qend">
 <h2 id="h46">2.6. Гистограмма. Критерий согласия Пирсона</h2>
 <h3 id="h47">Гистограмма</h3>
-<p><strong>Гистограмма</strong><strong> — ступенчатая фигура, состоящая из прямоугольников, основаниями которых служат частичные интервалы длины h, а высоты равны n</strong><strong><sub>i</sub></strong><strong>/h (гистограмма частот) или w</strong><strong><sub>i</sub></strong><strong>/h = n</strong><strong><sub>i</sub></strong><strong>/(Nh) (гистограмма относительных частот). Гистограмма относительных частот является статистическим аналогом (оценкой) плотности распределения; её площадь равна 1.</strong></p>
-<p><strong>Построение гистограммы по выборке x</strong><strong><sub>1</sub></strong><strong>, …, x</strong><strong><sub>N</sub></strong><strong>:</strong></p>
+<p><strong>Гистограмма — ступенчатая фигура, состоящая из прямоугольников, основаниями которых служат частичные интервалы длины h, а высоты равны <span class="frac"><span class="fn">n<sub>i</sub></span><span class="fd">h</span></span> (гистограмма частот) или <span class="frac"><span class="fn">w<sub>i</sub></span><span class="fd">h</span></span> = <span class="frac"><span class="fn">n<sub>i</sub></span><span class="fd">Nh</span></span> (гистограмма относительных частот). Гистограмма относительных частот является статистическим аналогом (оценкой) плотности распределения; её площадь равна 1.</strong></p>
+<p><strong>Построение гистограммы по выборке x<sub>1</sub>, …, x<sub>N</sub>:</strong></p>
 <ul>
-<li><strong>Найти x</strong><strong><sub>min</sub></strong><strong>, x</strong><strong><sub>max</sub></strong><strong> и размах R = x</strong><strong><sub>max</sub></strong><strong> − x</strong><strong><sub>min</sub></strong><strong>.</strong></li>
-<li><strong>Выбрать число интервалов k (например, по формуле Стёрджеса k ≈ 1 + 3,322 lg N или k ≈ √N) и шаг h = R/k.</strong></li>
-<li><strong>Подсчитать n</strong><strong><sub>i</sub></strong><strong> — число значений, попавших в i-й интервал (∑n</strong><strong><sub>i</sub></strong><strong> = N).</strong></li>
-<li><strong>Вычислить относительные частоты w</strong><strong><sub>i</sub></strong><strong> = n</strong><strong><sub>i</sub></strong><strong>/N и высоты w</strong><strong><sub>i</sub></strong><strong>/h.</strong></li>
+<li><strong>Найти x<sub>min</sub>, x<sub>max</sub> и размах R = x<sub>max</sub> − x<sub>min</sub>.</strong></li>
+<li><strong>Выбрать число интервалов k (например, по формуле Стёрджеса k ≈ 1 + 3,322 lg N или k ≈ √N) и шаг h = <span class="frac"><span class="fn">R</span><span class="fd">k</span></span>.</strong></li>
+<li><strong>Подсчитать n<sub>i</sub> — число значений, попавших в i-й интервал (∑n<sub>i</sub> = N).</strong></li>
+<li><strong>Вычислить относительные частоты w<sub>i</sub> = <span class="frac"><span class="fn">n<sub>i</sub></span><span class="fd">N</span></span> и высоты <span class="frac"><span class="fn">w<sub>i</sub></span><span class="fd">h</span></span>.</strong></li>
 <li><strong>Построить прямоугольники; для сравнения на тот же график нанести теоретическую плотность f(x).</strong></li>
 </ul>
 <h3 id="h48">Критерий согласия Пирсона (χ²)</h3>
-<p><strong>Критерий согласия</strong><strong> — правило проверки гипотезы о предполагаемом законе распределения. Проверяется нулевая гипотеза H</strong><strong><sub>0</sub></strong><strong>: «случайная величина X имеет функцию распределения F(x)» (например, нормальную, показательную, равномерную).</strong></p>
+<p><strong>Критерий согласия — правило проверки гипотезы о предполагаемом законе распределения. Проверяется нулевая гипотеза H<sub>0</sub>: «случайная величина X имеет функцию распределения F(x)» (например, нормальную, показательную, равномерную).</strong></p>
 <p><strong>Порядок применения:</strong></p>
 <ul>
-<li><strong>Разбить выборку объёма N на k интервалов, найти эмпирические частоты n</strong><strong><sub>i</sub></strong><strong>.</strong></li>
-<li><strong>Если параметры закона неизвестны, оценить их по выборке (для нормального a ≈ m, σ ≈ √d; для показательного λ ≈ 1/m).</strong></li>
-<li><strong>Вычислить теоретические вероятности попадания в интервалы: p</strong><strong><sub>i</sub></strong><strong> = P(a</strong><strong><sub>i</sub></strong><strong> &lt; X &lt; b</strong><strong><sub>i</sub></strong><strong>) = F(b</strong><strong><sub>i</sub></strong><strong>) − F(a</strong><strong><sub>i</sub></strong><strong>) и теоретические частоты N·p</strong><strong><sub>i</sub></strong><strong>.</strong></li>
+<li><strong>Разбить выборку объёма N на k интервалов, найти эмпирические частоты n<sub>i</sub>.</strong></li>
+<li><strong>Если параметры закона неизвестны, оценить их по выборке (для нормального a ≈ m, σ ≈ √d; для показательного λ ≈ <span class="frac"><span class="fn">1</span><span class="fd">m</span></span>).</strong></li>
+<li><strong>Вычислить теоретические вероятности попадания в интервалы: p<sub>i</sub> = P(a<sub>i</sub> &lt; X &lt; b<sub>i</sub>) = F(b<sub>i</sub>) − F(a<sub>i</sub>) и теоретические частоты N·p<sub>i</sub>.</strong></li>
 <li><strong>Вычислить наблюдаемое значение статистики:</strong></li>
 </ul>
-<p><strong>χ²</strong><strong><sub>набл</sub></strong><strong> = ∑</strong><strong><sub>i=1</sub></strong><strong><sup>k</sup></strong><strong> (n</strong><strong><sub>i</sub></strong><strong> − Np</strong><strong><sub>i</sub></strong><strong>)</strong><strong><sup>2</sup></strong><strong> / (Np</strong><strong><sub>i</sub></strong><strong>)</strong></p>
+<p><strong>χ²<sub>набл</sub> = ∑<sub>i=1</sub><sup>k</sup> <span class="frac"><span class="fn">(n<sub>i</sub> − Np<sub>i</sub>)<sup>2</sup></span><span class="fd">Np<sub>i</sub></span></span></strong></p>
 <ul>
 <li><strong>Определить число степеней свободы ν = k − 1 − s, где s — число параметров, оценённых по выборке (нормальное — 2, показательное — 1; если параметры заданы заранее, s = 0).</strong></li>
-<li><strong>По таблице найти критическое значение χ²</strong><strong><sub>кр</sub></strong><strong>(α; ν) для уровня значимости α (обычно 0,05).</strong></li>
-<li><strong>Если χ²</strong><strong><sub>набл</sub></strong><strong> &lt; χ²</strong><strong><sub>кр</sub></strong><strong> — нет оснований отвергнуть H</strong><strong><sub>0</sub></strong><strong> (данные согласуются с законом); если χ²</strong><strong><sub>набл</sub></strong><strong> ≥ χ²</strong><strong><sub>кр</sub></strong><strong> — гипотеза отвергается.</strong></li>
+<li><strong>По таблице найти критическое значение χ²<sub>кр</sub>(α; ν) для уровня значимости α (обычно 0,05).</strong></li>
+<li><strong>Если χ²<sub>набл</sub> &lt; χ²<sub>кр</sub> — нет оснований отвергнуть H<sub>0</sub> (данные согласуются с законом); если χ²<sub>набл</sub> ≥ χ²<sub>кр</sub> — гипотеза отвергается.</strong></li>
 </ul>
-<p><strong>Смысл: статистика χ² характеризует суммарное расхождение эмпирических и теоретических частот; при справедливости H</strong><strong><sub>0</sub></strong><strong> и больших N она имеет распределение χ² с ν степенями свободы (теорема Пирсона).</strong></p>
-<p><strong>Условия применимости:</strong><strong> объём выборки N ≥ 50; в каждом интервале Np</strong><strong><sub>i</sub></strong><strong> ≥ 5 (малочисленные крайние интервалы объединяют с соседними, уменьшая k).</strong></p>
-<p><strong>Критические значения χ²</strong><strong><sub>кр</sub></strong><strong> при α = 0,05:</strong></p>
-<div class="tw"><table><tr><td><strong>ν</strong></td><td><strong>1</strong></td><td><strong>2</strong></td><td><strong>3</strong></td><td><strong>4</strong></td><td><strong>5</strong></td><td><strong>6</strong></td><td><strong>7</strong></td><td><strong>8</strong></td><td><strong>9</strong></td><td><strong>10</strong></td></tr><tr><td><strong>χ²</strong><strong><sub>кр</sub></strong></td><td><strong>3,84</strong></td><td><strong>5,99</strong></td><td><strong>7,81</strong></td><td><strong>9,49</strong></td><td><strong>11,07</strong></td><td><strong>12,59</strong></td><td><strong>14,07</strong></td><td><strong>15,51</strong></td><td><strong>16,92</strong></td><td><strong>18,31</strong></td></tr></table></div>
+<p><strong>Смысл: статистика χ² характеризует суммарное расхождение эмпирических и теоретических частот; при справедливости H<sub>0</sub> и больших N она имеет распределение χ² с ν степенями свободы (теорема Пирсона).</strong></p>
+<p><strong>Условия применимости: объём выборки N ≥ 50; в каждом интервале Np<sub>i</sub> ≥ 5 (малочисленные крайние интервалы объединяют с соседними, уменьшая k).</strong></p>
+<p><strong>Критические значения χ²<sub>кр</sub> при α = 0,05:</strong></p>
+<div class="tw"><table><tr><td><strong>ν</strong></td><td><strong>1</strong></td><td><strong>2</strong></td><td><strong>3</strong></td><td><strong>4</strong></td><td><strong>5</strong></td><td><strong>6</strong></td><td><strong>7</strong></td><td><strong>8</strong></td><td><strong>9</strong></td><td><strong>10</strong></td></tr><tr><td><strong>χ²<sub>кр</sub></strong></td><td><strong>3,84</strong></td><td><strong>5,99</strong></td><td><strong>7,81</strong></td><td><strong>9,49</strong></td><td><strong>11,07</strong></td><td><strong>12,59</strong></td><td><strong>14,07</strong></td><td><strong>15,51</strong></td><td><strong>16,92</strong></td><td><strong>18,31</strong></td></tr></table></div>
 <p><strong>Применительно к моделированию: критерий Пирсона позволяет проверить, что смоделированная выборка (равномерная, показательная, нормальная) действительно подчиняется заданному закону, то есть что генератор и алгоритм моделирования работают правильно.</strong></p>
+<hr class="qend">
 </main>
 <script>
 var root = document.documentElement;
@@ -418,20 +386,6 @@ function fs(d){
   applyFs(clamp(cur + d*2));
 }
 (function(){ try{ var s = localStorage.getItem('fs'); if(s) applyFs(clamp(parseInt(s))); }catch(e){} })();
-function toc(){ document.getElementById('toc').classList.toggle('on'); document.getElementById('bar').classList.remove('on'); }
-// tap near the top toggles the control bar
-document.addEventListener('click', function(e){
-  if (e.target.closest('#bar') || e.target.closest('#toc')) return;
-  if (e.clientY < 70) document.getElementById('bar').classList.toggle('on');
-});
-// jump from TOC and close it
-document.getElementById('toc').addEventListener('click', function(e){
-  var a = e.target.closest('a[href^="#"]'); if(!a) return;
-  e.preventDefault();
-  var el = document.querySelector(a.getAttribute('href'));
-  if (el) el.scrollIntoView({behavior:'smooth'});
-  document.getElementById('toc').classList.remove('on');
-});
 // inline contents: jump, then collapse so the text is right below
 document.getElementById('contents').addEventListener('click', function(e){
   var a = e.target.closest('a[href^="#"]'); if(!a) return;

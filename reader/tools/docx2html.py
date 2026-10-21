@@ -12,6 +12,8 @@ import sys
 import xml.etree.ElementTree as ET
 import zipfile
 
+from mathfmt import fractionize_html
+
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 
@@ -84,11 +86,14 @@ def convert_body(body):
             out.append("</ul>")
             list_open = False
 
+    last_content = False  # True after a paragraph/list/table, for the question divider
+
     for el in body:
         tag = el.tag.replace(W, "")
         if tag == "tbl":
             close_list()
             out.append(table_html(el))
+            last_content = True
             continue
         if tag != "p":
             continue
@@ -99,18 +104,27 @@ def convert_body(body):
         if style in HEADING:
             close_list()
             level = HEADING[style]
+            # A yellow rule closes the previous question before a new part (h1) or
+            # question (h2) begins — but not between a part and its first question.
+            if level in ("h1", "h2") and last_content:
+                out.append('<hr class="qend">')
             hid = f"h{len(headings)}"
             headings.append((int(level[1]), hid, re.sub("<[^>]+>", "", inner)))
             out.append(f'<{level} id="{hid}">{inner}</{level}>')
+            last_content = False
         elif is_list or style == "ListParagraph":
             if not list_open:
                 out.append("<ul>")
                 list_open = True
-            out.append(f"<li>{inner}</li>")
+            out.append(f"<li>{fractionize_html(inner)}</li>")
+            last_content = True
         else:
             close_list()
-            out.append(f"<p>{inner}</p>")
+            out.append(f"<p>{fractionize_html(inner)}</p>")
+            last_content = True
     close_list()
+    if last_content:
+        out.append('<hr class="qend">')   # close the final question
     return "\n".join(out), headings
 
 
@@ -120,7 +134,7 @@ def table_html(tbl):
         cells = []
         for tc in tr.findall(w("tc")):
             inner = " ".join(para_inner(p) for p in tc.findall(w("p"))).strip()
-            cells.append(f"<td>{inner}</td>")
+            cells.append(f"<td>{fractionize_html(inner)}</td>")
         rows.append("<tr>" + "".join(cells) + "</tr>")
     return '<div class="tw"><table>' + "".join(rows) + "</table></div>"
 
@@ -141,7 +155,7 @@ body {{
   font-size: var(--fs);
   line-height: 1.5;
   /* Padding keeps text clear of the rounded corners of the watch screen. */
-  padding: 44px 20px 60px;
+  padding: 40px 18px 72px;
   -webkit-text-size-adjust: none;
 }}
 h1 {{ font-size: 1.5em; line-height: 1.25; margin: .2em 0 .5em; color: #fff; }}
@@ -158,6 +172,16 @@ em {{ color: #ffe0a8; font-style: italic; }}
 table {{ border-collapse: collapse; font-size: .88em; }}
 td {{ border: 1px solid #444; padding: 4px 8px; white-space: nowrap; text-align: center; }}
 
+/* stacked fractions */
+.frac {{ display: inline-flex; flex-direction: column; vertical-align: -0.45em;
+  text-align: center; margin: 0 .12em; font-size: .95em; }}
+.frac > .fn {{ padding: 0 .3em; border-bottom: 1.5px solid currentColor; line-height: 1.25; }}
+.frac > .fd {{ padding: 0 .3em; line-height: 1.25; }}
+
+/* yellow rule marking the end of a question */
+hr.qend {{ border: none; border-top: 2px solid #e8b000; border-radius: 2px;
+  margin: 1.5em 0 .3em; }}
+
 /* inline contents at the top of the page */
 #contents {{ border: 1px solid #333; border-radius: 10px; background: #0d0d0d;
   margin: 0 0 1.1em; padding: 4px 12px; }}
@@ -171,30 +195,22 @@ td {{ border: 1px solid #444; padding: 4px 8px; white-space: nowrap; text-align:
 #contents a.lvl2 {{ padding-left: 14px; color: #bcd; }}
 #contents a.lvl3 {{ padding-left: 30px; color: #9ab; font-size: .86em; }}
 
-/* top bar + TOC overlay (shown on tap) */
-#bar {{ position: fixed; top: 0; left: 0; right: 0; height: 38px; display: none;
-  align-items: center; justify-content: center; gap: 14px;
-  background: rgba(20,20,20,.92); border-bottom: 1px solid #333; z-index: 10; }}
-#bar button {{ background: #2a2a2a; color: #fff; border: none; border-radius: 16px;
-  font-size: 16px; padding: 5px 14px; }}
-#bar.on {{ display: flex; }}
-#toc {{ position: fixed; inset: 0; background: #0a0a0a; z-index: 20; display: none;
-  overflow-y: auto; padding: 40px 18px 40px; }}
-#toc.on {{ display: block; }}
-#toc a {{ display: block; color: #cfe3ff; text-decoration: none; padding: 9px 0;
-  border-bottom: 1px solid #222; font-size: .95em; }}
-#toc .lvl2 {{ padding-left: 14px; color: #bcd; font-size: .9em; }}
-#toc .lvl3 {{ padding-left: 28px; color: #9ab; font-size: .85em; }}
-#toc .close {{ color: #f88; border-bottom: none; margin-bottom: 6px; }}
+/* fixed bottom control bar */
+#ctl {{ position: fixed; left: 0; right: 0; bottom: 0; height: 52px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: rgba(14,14,16,.96); border-top: 1px solid #333; z-index: 10;
+  padding-bottom: 4px; }}
+#ctl button {{ background: #242424; color: #fff; border: none; border-radius: 18px;
+  font-size: 15px; padding: 8px 13px; }}
+#ctl .tocbtn {{ background: #1f3350; color: #cfe3ff; font-weight: 700; padding: 8px 16px; }}
 </style>
 </head>
 <body>
-<div id="bar">
+<div id="ctl">
   <button onclick="fs(-1)">A&minus;</button>
-  <button onclick="toc()">&#9776;</button>
+  <button class="tocbtn" onclick="window.scrollTo({{top:0,behavior:'smooth'}})">&#9650; Оглавление</button>
   <button onclick="fs(1)">A+</button>
 </div>
-<div id="toc"><a class="close" onclick="toc()">&times; закрыть</a>{toc}</div>
 <main>
 <details id="contents" open>
 <summary>&#128209; Оглавление</summary>
@@ -211,20 +227,6 @@ function fs(d){{
   applyFs(clamp(cur + d*2));
 }}
 (function(){{ try{{ var s = localStorage.getItem('fs'); if(s) applyFs(clamp(parseInt(s))); }}catch(e){{}} }})();
-function toc(){{ document.getElementById('toc').classList.toggle('on'); document.getElementById('bar').classList.remove('on'); }}
-// tap near the top toggles the control bar
-document.addEventListener('click', function(e){{
-  if (e.target.closest('#bar') || e.target.closest('#toc')) return;
-  if (e.clientY < 70) document.getElementById('bar').classList.toggle('on');
-}});
-// jump from TOC and close it
-document.getElementById('toc').addEventListener('click', function(e){{
-  var a = e.target.closest('a[href^="#"]'); if(!a) return;
-  e.preventDefault();
-  var el = document.querySelector(a.getAttribute('href'));
-  if (el) el.scrollIntoView({{behavior:'smooth'}});
-  document.getElementById('toc').classList.remove('on');
-}});
 // inline contents: jump, then collapse so the text is right below
 document.getElementById('contents').addEventListener('click', function(e){{
   var a = e.target.closest('a[href^="#"]'); if(!a) return;
