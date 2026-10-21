@@ -1,0 +1,9 @@
+# Normalize line endings: LF in the repo, auto on checkout
+* text=auto eol=lf
+
+# Binary assets
+*.apk binary
+*.keystore binary
+*.png binary
+*.jpg binary
+*.docx binary
